@@ -39,7 +39,6 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    ComposeFragment mComposeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +47,6 @@ public class HomeActivity extends AppCompatActivity {
 
         // Find views and define fragments
         bottomNavigationView = findViewById(R.id.bottomNavigation);
-        mComposeFragment = new ComposeFragment();
-
         // Define a fragment manager for bottom navigation
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -63,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.action_home:
                         break;
                     case R.id.action_create:
-                        fragment = mComposeFragment;
+                        fragment = new ComposeFragment();
                         break;
                     case R.id.action_profile:
                         break;

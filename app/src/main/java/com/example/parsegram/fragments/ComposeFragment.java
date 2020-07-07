@@ -47,15 +47,14 @@ public class ComposeFragment extends Fragment {
     private static final String APP_TAG = "Parsegram";
     public static final String TAG = "ComposeFragment";
 
-    EditText mDescriptionEt;
-    Button mCaptureBtn;
-    Button mPostBtn;
-    ImageView mCapturedIv;
+    private EditText mDescriptionEt;
+    private Button mCaptureBtn;
+    private Button mPostBtn;
+    private ImageView mCapturedIv;
 
-    File photoFile;
-    String photoFileName = "photo.png";
+    private File photoFile;
 
-    public ComposeFragment() {
+      public ComposeFragment() {
         // Required empty public constructor
     }
 
@@ -96,6 +95,7 @@ public class ComposeFragment extends Fragment {
       public void onCaptureClicked(View view) {
           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
           // Create a File reference for future access
+          String photoFileName = "photo.png";
           photoFile = getPhotoFileUri(photoFileName);
 
           // wrap File object into a content provider
