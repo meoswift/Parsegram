@@ -57,13 +57,15 @@ public class PostsFragment extends Fragment {
     }
 
     // Finding all objects of class Post in Parse database
-    private void queryPosts() {
+    protected void queryPosts() {
         // Specify which class to query
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include the user object related to the posts
         query.include(Post.KEY_USER);
         // limit query to latest 20 items
         query.setLimit(20);
+        // order the posts from newest to oldest
+        query.orderByDescending(Post.KEY_CREATED_AT);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             public void done(List<Post> posts, ParseException e) {
