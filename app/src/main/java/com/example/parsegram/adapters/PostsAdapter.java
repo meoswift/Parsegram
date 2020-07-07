@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.parsegram.Post;
+import com.example.parsegram.models.Post;
 import com.example.parsegram.R;
 import com.parse.ParseFile;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

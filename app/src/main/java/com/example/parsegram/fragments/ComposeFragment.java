@@ -21,16 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.parsegram.HomeActivity;
-import com.example.parsegram.LoginActivity;
-import com.example.parsegram.Post;
+import com.example.parsegram.models.Post;
 import com.example.parsegram.R;
-import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 import java.io.File;
 
@@ -181,6 +177,7 @@ public class ComposeFragment extends Fragment {
                       Log.d("HomeActivity", "Error saving post to dtb" + e);
                   }
 
+                  // TODO: create a progress bar instead of Toast message
                   Toast.makeText(getContext(), "Post saved successfully!",
                           Toast.LENGTH_SHORT).show();
                   mDescriptionEt.setText(null); // clear description box once saved

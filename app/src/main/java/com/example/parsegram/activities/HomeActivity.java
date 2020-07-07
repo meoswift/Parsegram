@@ -1,4 +1,4 @@
-package com.example.parsegram;
+package com.example.parsegram.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.parsegram.R;
 import com.example.parsegram.fragments.ComposeFragment;
+import com.example.parsegram.fragments.PostsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -58,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Switch fragments depending on chosen menu item
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
+                        fragment = new PostsFragment();
                         break;
                     case R.id.action_create:
                         fragment = new ComposeFragment();
@@ -74,27 +77,5 @@ public class HomeActivity extends AppCompatActivity {
         });
         // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_home);
-
-        // queryPosts();
-    }
-
-    // Finding all objects of class Post in Parse database
-    private void queryPosts() {
-        // Specify which class to query
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER); // include the user object related to the posts
-        query.findInBackground(new FindCallback<Post>() {
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.d("HomeActivity", "Issue with querying posts" + e);
-                    return;
-                }
-
-                for (Post post : posts) {
-                    Log.d("HomeActivity", "Post: " + post.getDescription());
-                    Log.d("HomeActivity", "User: " + post.getUser().getUsername());
-                }
-            }
-        });
     }
 }
