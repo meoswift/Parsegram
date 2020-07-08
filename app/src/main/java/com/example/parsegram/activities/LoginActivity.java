@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
     EditText mUsernameEt;
     EditText mPasswordEt;
-    BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         if (ParseUser.getCurrentUser() != null) {
             startHomeActivity();
         }
+
+        // Find views
+        mUsernameEt = findViewById(R.id.etUsername);
+        mPasswordEt = findViewById(R.id.etPassword);
     }
 
     // On click listener for login button
@@ -57,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (user == null) {
                     // Log in failed. Check logcat for error and send a Toast to let user know
                     Log.d(TAG, e.toString());
-                    Toast.makeText(LoginActivity.this, "Issue with login!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // User is logged in successfully, navigate to Home/Feed.
@@ -80,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (e != null) {
                     // Log in failed. Check logcat for error and send a Toast to let user know
                     Log.d(TAG, e.toString());
-                    Toast.makeText(LoginActivity.this, "Issue with sign up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // User is logged in successfully, navigate to Home/Feed.

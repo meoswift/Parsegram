@@ -20,13 +20,13 @@ import java.util.List;
 
 // This class implements a View adapter. For each Post object, the adapter will create a
 // ViewHolder and bind that ViewHolder to the RecyclerView.
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.ViewHolder> {
 
-    List<Post> postList;
-    Context context;
+    private List<Post> mUserPostsList;
+    private Context context;
 
-    public PostsAdapter(List<Post> postList, Context context) {
-        this.postList = postList;
+    public UserPostsAdapter(List<Post> postList, Context context) {
+        this.mUserPostsList = postList;
         this.context = context;
     }
 
@@ -34,18 +34,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     // Create new views by inflating a layout (invoked by the layout manager)
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.post_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_post_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     // Replace the contents of a view with data at a specific Post object
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post = postList.get(position);
+        Post post = mUserPostsList.get(position);
 
-        holder.mUsernameTopTv.setText(post.getUser().getUsername());
-        holder.mUsernameBottomTv.setText(post.getUser().getUsername());
-        holder.mDescriptionTv.setText(post.getDescription());
         ParseFile image = post.getImage();
         if (image != null) {
             Glide.with(context).load(image.getUrl()). into(holder.mPhotoIv);
@@ -55,35 +52,28 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     // Return the size of our Post list
     @Override
     public int getItemCount() {
-        return postList.size();
+        return mUserPostsList.size();
     }
 
     // Find views from our post item layout
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mUsernameTopTv;
-        TextView mUsernameBottomTv;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mPhotoIv;
-        TextView mDescriptionTv;
 
         public ViewHolder(@NonNull View item) {
             super(item);
-
-            mUsernameTopTv = item.findViewById(R.id.tvUsernameTop);
-            mUsernameBottomTv = item.findViewById(R.id.tvUsernameBottom);
-            mPhotoIv = item.findViewById(R.id.ivPhoto);
-            mDescriptionTv = item.findViewById(R.id.tvDescription);
+            mPhotoIv = item.findViewById(R.id.userPostIv);
         }
     }
 
     // Clean all elements of the recycler
     public void clear() {
-        postList.clear();
+        mUserPostsList.clear();
         notifyDataSetChanged();
     }
 
     // Add a list of items -- change to type used
     public void addAll(List<Post> list) {
-        postList.addAll(list);
+        mUserPostsList.addAll(list);
         notifyDataSetChanged();
     }
 }

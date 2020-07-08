@@ -74,21 +74,21 @@ public class ComposeFragment extends Fragment {
         mCaptureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCaptureClicked(view);
+                onCaptureClicked();
             }
         });
 
         mPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onPostClicked(view);
+                onPostClicked();
             }
         });
 
     }
 
       // When user click on Capture button, starts an intent to open the camera
-      public void onCaptureClicked(View view) {
+      public void onCaptureClicked() {
           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
           // Create a File reference for future access
           String photoFileName = "photo.png";
@@ -142,7 +142,7 @@ public class ComposeFragment extends Fragment {
       }
 
       // When user click on post, gets description and saves post to database
-      public void onPostClicked(View view) {
+      public void onPostClicked() {
           String description = mDescriptionEt.getText().toString();
           // Description is required
           if (description.isEmpty()) {

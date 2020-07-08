@@ -6,34 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
 
-    <EditText
-        android:id="@+id/etUsername"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedUsername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="@string/username"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:hint="username"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedUsername"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp">
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:ems="10"
         android:hint="password"
-        android:inputType="none|textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+        android:inputType="none|textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnLogin"
@@ -42,11 +59,13 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#1E88E5"
         android:onClick="onLoginClicked"
         android:text="Login"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/outlinedPassword" />
 
     <Button
         android:id="@+id/signupBtn"
@@ -54,8 +73,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#33B52A"
         android:onClick="onSignUpClicked"
         android:text="Sign Up"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
