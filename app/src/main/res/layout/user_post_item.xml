@@ -7,13 +7,13 @@
 
     <ImageView
         android:id="@+id/userPostIv"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:padding="2dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        app:layout_constraintHorizontal_weight="1"/>
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
