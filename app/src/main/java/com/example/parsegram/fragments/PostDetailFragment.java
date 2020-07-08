@@ -2,54 +2,37 @@ package com.example.parsegram.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.parsegram.R;
+import com.example.parsegram.models.Post;
+import com.parse.ParseFile;
+
+import org.parceler.Parcels;
+
+import java.util.List;
 
 public class PostDetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    TextView mUsernameTopTv;
+    TextView mUsernameBottomTv;
+    ImageView mPhotoIv;
+    TextView mDescriptionTv;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Post post;
 
     public PostDetailFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PostDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PostDetailFragment newInstance(String param1, String param2) {
-        PostDetailFragment fragment = new PostDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -57,5 +40,30 @@ public class PostDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_post_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+        post = Parcels.unwrap(bundle.getParcelable("post"));
+
+        mUsernameTopTv = view.findViewById(R.id.usernameTopTv);
+        mUsernameBottomTv = view.findViewById(R.id.usernameBottomTv);
+        mPhotoIv = view.findViewById(R.id.photoIv);
+        mDescriptionTv = view.findViewById(R.id.descriptionTv);
+
+        displayPostDetails(post);
+    }
+
+    public void displayPostDetails(Post post) {
+        mUsernameTopTv.setText(post.getUser().getUsername());
+        mUsernameBottomTv.setText(post.getUser().getUsername());
+        mDescriptionTv.setText(post.getDescription());
+        ParseFile image = post.getImage();
+        if (image != null) {
+            Glide.with(getContext()).load(image.getUrl()). into(mPhotoIv);
+        }
     }
 }

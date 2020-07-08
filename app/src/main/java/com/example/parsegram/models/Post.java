@@ -1,18 +1,25 @@
 package com.example.parsegram.models;
 
+import android.os.Parcelable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 // Post model represent a Post object in our Parse database
 @ParseClassName("Post")
+@Parcel(analyze={Post.class})
 public class Post extends ParseObject {
 
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_AT = "createdAt";
+
+    public Post() {}
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
@@ -37,9 +44,4 @@ public class Post extends ParseObject {
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
     }
-
-    public boolean isMe() {
-        return getUser().getUsername().equals(ParseUser.getCurrentUser().getUsername());
-    }
-
 }

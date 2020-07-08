@@ -1,6 +1,8 @@
 package com.example.parsegram.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.parsegram.fragments.PostDetailFragment;
 import com.example.parsegram.models.Post;
 import com.example.parsegram.R;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -56,12 +62,31 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
     }
 
     // Find views from our post item layout
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView mPhotoIv;
 
         public ViewHolder(@NonNull View item) {
             super(item);
             mPhotoIv = item.findViewById(R.id.userPostIv);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getAdapterPosition();
+            Post post = mUserPostsList.get(pos);
+
+            PostDetailFragment fragment = new PostDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("post", Parcels.wrap(post));
+
+            ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.profile_fragment, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+            fragment.setArguments(bundle);
+
         }
     }
 
