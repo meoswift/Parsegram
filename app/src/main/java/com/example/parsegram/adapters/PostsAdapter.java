@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,9 +47,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.mUsernameTopTv.setText(post.getUser().getUsername());
         holder.mUsernameBottomTv.setText(post.getUser().getUsername());
         holder.mDescriptionTv.setText(post.getDescription());
+        holder.mTimeStampTv.setText(post.getFormatedTime());
+
         ParseFile image = post.getImage();
         if (image != null) {
+            holder.mProgressBar.setVisibility(View.VISIBLE);
             Glide.with(context).load(image.getUrl()). into(holder.mPhotoIv);
+            holder.mProgressBar.setVisibility(View.GONE);
         }
     }
 
@@ -64,6 +69,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView mUsernameBottomTv;
         ImageView mPhotoIv;
         TextView mDescriptionTv;
+        ProgressBar mProgressBar;
+        TextView mTimeStampTv;
 
         public ViewHolder(@NonNull View item) {
             super(item);
@@ -72,6 +79,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             mUsernameBottomTv = item.findViewById(R.id.tvUsernameBottom);
             mPhotoIv = item.findViewById(R.id.ivPhoto);
             mDescriptionTv = item.findViewById(R.id.tvDescription);
+            mProgressBar = item.findViewById(R.id.pbLoading);
+            mTimeStampTv = item.findViewById(R.id.tvTimeStamp);
         }
     }
 

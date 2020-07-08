@@ -1,6 +1,7 @@
 package com.example.parsegram.models;
 
-import android.os.Parcelable;
+import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -8,6 +9,12 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 // Post model represent a Post object in our Parse database
 @ParseClassName("Post")
@@ -23,6 +30,15 @@ public class Post extends ParseObject {
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
+    }
+
+    public String getFormatedTime() {
+
+        long dateMillis = getCreatedAt().getTime();
+        String ago = DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+        return ago;
     }
 
     public ParseFile getImage() {
@@ -44,4 +60,5 @@ public class Post extends ParseObject {
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
     }
+
 }

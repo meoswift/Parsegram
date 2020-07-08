@@ -28,6 +28,7 @@ public class PostDetailFragment extends Fragment {
     TextView mUsernameBottomTv;
     ImageView mPhotoIv;
     TextView mDescriptionTv;
+    TextView mTimeStampTv;
 
     private Post post;
 
@@ -53,6 +54,7 @@ public class PostDetailFragment extends Fragment {
         mUsernameBottomTv = view.findViewById(R.id.usernameBottomTv);
         mPhotoIv = view.findViewById(R.id.photoIv);
         mDescriptionTv = view.findViewById(R.id.descriptionTv);
+        mTimeStampTv = view.findViewById(R.id.tvTimeStamp);
 
         displayPostDetails(post);
     }
@@ -61,6 +63,8 @@ public class PostDetailFragment extends Fragment {
         mUsernameTopTv.setText(post.getUser().getUsername());
         mUsernameBottomTv.setText(post.getUser().getUsername());
         mDescriptionTv.setText(post.getDescription());
+        mTimeStampTv.setText(post.getFormatedTime());
+
         ParseFile image = post.getImage();
         if (image != null) {
             Glide.with(getContext()).load(image.getUrl()). into(mPhotoIv);
