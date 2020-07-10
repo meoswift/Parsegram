@@ -1,20 +1,16 @@
 package com.example.parsegram.models;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.ArrayList;
 
 // Post model represent a Post object in our Parse database
 @ParseClassName("Post")
@@ -25,6 +21,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_COMMENTS = "comments";
 
     public Post() {}
 
@@ -61,4 +58,11 @@ public class Post extends ParseObject {
         put(KEY_USER, user);
     }
 
+    public ParseRelation<ParseObject> getComments() {
+        return getRelation(KEY_COMMENTS);
+    }
+
+    public void setComments(ArrayList<ParseObject> comments) {
+        put(KEY_COMMENTS, comments);
+    }
 }

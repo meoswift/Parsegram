@@ -81,7 +81,7 @@ public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.View
             bundle.putParcelable("post", Parcels.wrap(post));
 
             ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.profile_fragment, fragment)
+                    .replace(R.id.your_placeholder, fragment)
                     .addToBackStack(null)
                     .commit();
 

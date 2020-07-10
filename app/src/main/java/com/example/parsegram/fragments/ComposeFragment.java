@@ -34,11 +34,7 @@ import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
-/*
- A simple {@link Fragment} subclass.
- Create an instance of a ComposeFragment that lets user create a post with description, photo,
- and post to timeline.
-*/
+// This Fragment allows user to take a picture, add a description, and post to timeline
 public class ComposeFragment extends Fragment {
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 123;
@@ -181,12 +177,12 @@ public class ComposeFragment extends Fragment {
                 if (e != null) {
                     Log.d("HomeActivity", "Error saving post to dtb" + e);
                 }
-                // TODO: create a progress bar instead of Toast message
+
                 Toast.makeText(getContext(), "Posted to timeline!",
                         Toast.LENGTH_SHORT).show();
                 mDescriptionEt.setText(null); // clear description box once saved
                 mCapturedIv.setImageDrawable(null); // clear image once saved
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE); // progressBar disappear
             }
         });
     }

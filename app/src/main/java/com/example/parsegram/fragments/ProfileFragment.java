@@ -6,30 +6,28 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.parsegram.R;
 import com.example.parsegram.activities.LoginActivity;
-import com.example.parsegram.adapters.PostsAdapter;
 import com.example.parsegram.adapters.UserPostsAdapter;
 import com.example.parsegram.models.Post;
+import com.example.parsegram.models.User;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.xml.sax.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +36,16 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements EditProfileFragment.EditProfileListener {
 
+    private static final int EDIT_PROFILE_REQ = 123 ;
     private RecyclerView mUserPostsRv;
     private UserPostsAdapter mAdapter;
     private Button mLogOutBtn;
-    private TextView mCurrentUserTv;
+    private Button mEditProfileBtn;
+    private TextView mDisplayNameTv;
+    private TextView mUserBioTv;
+    private ImageView mProfilePicIv;
 
     private List<Post> mUserPostsList;
 
@@ -65,13 +67,19 @@ public class ProfileFragment extends Fragment {
         // Find view
         mUserPostsRv = view.findViewById(R.id.userPostsRv);
         mLogOutBtn = view.findViewById(R.id.logoutBtn);
-        mCurrentUserTv = view.findViewById(R.id.currentUserTv);
-
-        // Set display username of current user
-        mCurrentUserTv.setText(ParseUser.getCurrentUser().getUsername());
+        mEditProfileBtn = view.findViewById(R.id.editBtn);
+        mDisplayNameTv = view.findViewById(R.id.displayNameTv);
+        mUserBioTv = view.findViewById(R.id.userBioTv);
+        mProfilePicIv = view.findViewById(R.id.profilePic);
 
         // Initialize posts list to empty
         mUserPostsList = new ArrayList<Post>();
+
+        ParseUser user = ParseUser.getCurrentUser();
+        mDisplayNameTv.setText(user.getString(User.KEY_NAME));
+        mUserBioTv.setText(user.getString(User.KEY_BIO));
+        Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+                .circleCrop().into(mProfilePicIv);
 
         // Create a new adapter instance
         mAdapter = new UserPostsAdapter(mUserPostsList, getContext());
@@ -89,9 +97,16 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        queryPosts();
+        mEditProfileBtn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               showEditDialog();
+           }
+        });
 
+        queryPosts();
     }
+
 
     // Finding all objects of class Post in Parse database
     protected void queryPosts() {
@@ -119,5 +134,21 @@ public class ProfileFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    // Call this method to launch the edit dialog
+    private void showEditDialog() {
+        FragmentManager fm = getFragmentManager();
+        EditProfileFragment editProfileDialog = new EditProfileFragment();
+        // SETS the target fragment for use later when sending results
+        editProfileDialog.setTargetFragment(ProfileFragment.this, 300);
+        editProfileDialog.show(fm, "fragment_edit_profile");
+    }
+
+
+    @Override
+    public void onFinishEditDialog(String displayName, String userBio) {
+        mDisplayNameTv.setText(displayName);
+        mUserBioTv.setText(userBio);
     }
 }

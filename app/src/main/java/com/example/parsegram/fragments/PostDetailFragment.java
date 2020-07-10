@@ -22,6 +22,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+// This Fragment display a post in detail view when user click on the post in their profile
 public class PostDetailFragment extends Fragment {
 
     TextView mUsernameTopTv;
@@ -29,6 +30,7 @@ public class PostDetailFragment extends Fragment {
     ImageView mPhotoIv;
     TextView mDescriptionTv;
     TextView mTimeStampTv;
+    ImageView mProfileIv;
 
     private Post post;
 
@@ -55,6 +57,7 @@ public class PostDetailFragment extends Fragment {
         mPhotoIv = view.findViewById(R.id.photoIv);
         mDescriptionTv = view.findViewById(R.id.descriptionTv);
         mTimeStampTv = view.findViewById(R.id.tvTimeStamp);
+        mProfileIv = view.findViewById(R.id.profilePic);
 
         displayPostDetails(post);
     }
@@ -64,6 +67,7 @@ public class PostDetailFragment extends Fragment {
         mUsernameBottomTv.setText(post.getUser().getUsername());
         mDescriptionTv.setText(post.getDescription());
         mTimeStampTv.setText(post.getFormatedTime());
+        Glide.with(getContext()).load(R.drawable.ic_launcher_background).circleCrop().into(mProfileIv);
 
         ParseFile image = post.getImage();
         if (image != null) {

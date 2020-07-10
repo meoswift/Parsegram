@@ -1,6 +1,7 @@
 package com.example.parsegram.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.parsegram.activities.CommentsActivity;
 import com.example.parsegram.models.Post;
 import com.example.parsegram.R;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -48,6 +52,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.mUsernameBottomTv.setText(post.getUser().getUsername());
         holder.mDescriptionTv.setText(post.getDescription());
         holder.mTimeStampTv.setText(post.getFormatedTime());
+        Glide.with(context).load(R.drawable.ic_launcher_background).circleCrop()
+                .into(holder.mProfileIv);
 
         ParseFile image = post.getImage();
         if (image != null) {
@@ -64,13 +70,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     // Find views from our post item layout
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mUsernameTopTv;
         TextView mUsernameBottomTv;
         ImageView mPhotoIv;
         TextView mDescriptionTv;
         ProgressBar mProgressBar;
         TextView mTimeStampTv;
+        ImageView mProfileIv;
+        TextView mViewCommentsTv;
 
         public ViewHolder(@NonNull View item) {
             super(item);
@@ -81,6 +89,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             mDescriptionTv = item.findViewById(R.id.tvDescription);
             mProgressBar = item.findViewById(R.id.pbLoading);
             mTimeStampTv = item.findViewById(R.id.tvTimeStamp);
+            mProfileIv = item.findViewById(R.id.profilePic);
+            mViewCommentsTv = item.findViewById(R.id.viewCommentsTv);
+
+            mViewCommentsTv.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getAdapterPosition();
+            Post post = postList.get(pos);
+
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("post", Parcels.wrap(post));
+            context.startActivity(intent);
         }
     }
 
