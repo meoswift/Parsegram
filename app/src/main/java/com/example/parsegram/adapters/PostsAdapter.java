@@ -194,9 +194,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             final ParseUser user = ParseUser.getCurrentUser();
             // Specify which class to query
             ParseQuery<ParseUser> query = mLikesRelation.getQuery();
-//            Log.d("HUH", query.toString());
-//            query.include(Post.KEY_USER);
-//            query.whereEqualTo(Post.KEY_USER, user);
             // start an asynchronous call for posts
             query.findInBackground(new FindCallback<ParseUser>() {
                 public void done(List<ParseUser> users, ParseException e) {
@@ -205,15 +202,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         return;
                     }
 
-                    Log.d("HUH", users.toString());
-
                     // If the current has already liked the post, remove that like. Else, add.
                     if (users.size() != 0) {
                         mLikesRelation.remove(user);
+                        post.saveInBackground();
+                        // Change icon to liked 
                         mLikeBtnIv.setImageDrawable(context.getDrawable(R.drawable.ufi_heart_active));
                    } else {
-                        Log.d("hello", "in here");
                         mLikesRelation.add(user);
+                        post.saveInBackground();
+                        // Change icon to unliked
                         mLikeBtnIv.setImageDrawable(context.getDrawable(R.drawable.ufi_heart_icon));
                     }
                 }
