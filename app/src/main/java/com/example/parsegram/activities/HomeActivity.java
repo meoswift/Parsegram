@@ -18,7 +18,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
-// Activity that allows user to create a post with description and image, then post it
+// Activity that allows user to navigate between 3 tabs: Home, Create post, and User profile.
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;

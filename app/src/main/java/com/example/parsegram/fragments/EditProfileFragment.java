@@ -33,7 +33,7 @@ import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
-// This Dialog fragment allows users to edit their display name and bio
+// This Dialog fragment allows users to edit their display name, bio, and change profile picture
 public class EditProfileFragment extends DialogFragment {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;

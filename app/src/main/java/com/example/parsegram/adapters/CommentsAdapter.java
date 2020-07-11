@@ -18,6 +18,8 @@ import com.parse.ParseRelation;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class implements an adapter. For each Comment object, the adapter will create a
+// ViewHolder and bind that ViewHolder to the RecyclerView.
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     List<Comment> mComments;

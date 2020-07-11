@@ -7,6 +7,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+// This class represents a Comment object in the Parse database
 @ParseClassName("Comment")
 public class Comment extends ParseObject {
     public static final String KEY_BODY = "body";

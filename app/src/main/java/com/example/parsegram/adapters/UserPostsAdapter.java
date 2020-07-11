@@ -24,8 +24,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-// This class implements a View adapter. For each Post object, the adapter will create a
-// ViewHolder and bind that ViewHolder to the RecyclerView.
+// This class implements a View adapter. For each of current user's Post object, the adapter
+// will create a ViewHolder and bind that ViewHolder to the RecyclerView.
 public class UserPostsAdapter extends RecyclerView.Adapter<UserPostsAdapter.ViewHolder> {
 
     private List<Post> mUserPostsList;

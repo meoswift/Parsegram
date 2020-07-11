@@ -37,10 +37,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
+// This fragment displays a User profile that has profile pic, display name, bio, and a GridView
+// of their posts.
 public class ProfileFragment extends Fragment implements EditProfileFragment.EditProfileListener {
 
     private RecyclerView mUserPostsRv;

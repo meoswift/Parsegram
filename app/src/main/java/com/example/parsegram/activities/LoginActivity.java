@@ -17,7 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-/* A login screen that lets user log into their account with valid username and password */
+// A login screen that lets user log into their account with valid username and password
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // Create new account using given credentials
     private void createAccount(String username, String password) {
         // Create the ParseUser
         ParseUser user = new ParseUser();
