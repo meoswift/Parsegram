@@ -20,8 +20,10 @@ public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+    public static final String KEY_USERNAME = "username";
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_COMMENTS = "comments";
+    public static final String KEY_LIKES = "likes";
 
     public Post() {}
 
@@ -62,7 +64,7 @@ public class Post extends ParseObject {
         return getRelation(KEY_COMMENTS);
     }
 
-    public void setComments(ArrayList<ParseObject> comments) {
-        put(KEY_COMMENTS, comments);
+    public ParseRelation<ParseUser> getLikes() {
+        return getRelation(KEY_LIKES);
     }
 }

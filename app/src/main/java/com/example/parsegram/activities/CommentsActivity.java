@@ -79,6 +79,7 @@ public class CommentsActivity extends AppCompatActivity {
         });
     }
 
+    // Get all Comment objects in a post and add to local comments list
     private void queryComments() {
         // Specify which class to query
         ParseQuery query = mCommentsRelation.getQuery();
@@ -93,8 +94,6 @@ public class CommentsActivity extends AppCompatActivity {
                     Log.d("CommentsActivity", "Issue with querying posts" + e);
                     return;
                 }
-
-                Log.d("HUH", comments.toString());
 
                 // clear out old items before fetching new ones on refresh
                 mAdapter.clear();

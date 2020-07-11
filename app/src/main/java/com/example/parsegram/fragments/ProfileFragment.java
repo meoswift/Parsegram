@@ -1,6 +1,8 @@
 package com.example.parsegram.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,9 +28,12 @@ import com.example.parsegram.models.Post;
 import com.example.parsegram.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +43,6 @@ import java.util.List;
  */
 public class ProfileFragment extends Fragment implements EditProfileFragment.EditProfileListener {
 
-    private static final int EDIT_PROFILE_REQ = 123 ;
     private RecyclerView mUserPostsRv;
     private UserPostsAdapter mAdapter;
     private Button mLogOutBtn;
@@ -48,6 +52,8 @@ public class ProfileFragment extends Fragment implements EditProfileFragment.Edi
     private ImageView mProfilePicIv;
 
     private List<Post> mUserPostsList;
+    private String mUsername;
+    private ParseUser mUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -72,14 +78,14 @@ public class ProfileFragment extends Fragment implements EditProfileFragment.Edi
         mUserBioTv = view.findViewById(R.id.userBioTv);
         mProfilePicIv = view.findViewById(R.id.profilePic);
 
+        Bundle bundle = this.getArguments();
+        mUsername = bundle.getString(Post.KEY_USERNAME);
+
+        // Get the user whose profile will be displayed
+        queryUser();
+
         // Initialize posts list to empty
         mUserPostsList = new ArrayList<Post>();
-
-        ParseUser user = ParseUser.getCurrentUser();
-        mDisplayNameTv.setText(user.getString(User.KEY_NAME));
-        mUserBioTv.setText(user.getString(User.KEY_BIO));
-        Glide.with(getContext()).load(R.drawable.ic_launcher_background)
-                .circleCrop().into(mProfilePicIv);
 
         // Create a new adapter instance
         mAdapter = new UserPostsAdapter(mUserPostsList, getContext());
@@ -103,19 +109,36 @@ public class ProfileFragment extends Fragment implements EditProfileFragment.Edi
                showEditDialog();
            }
         });
-
-        queryPosts();
     }
 
+    private void queryUser() {
+        // Specify which class to query
+        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+        // Only get posts from current users
+        query.whereEqualTo(Post.KEY_USERNAME, mUsername);
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.d("PostsFragment", "Issue with querying posts" + e);
+                    return;
+                }
+
+                mUser = users.get(0);
+                populateUserInfo();
+                queryPosts();
+            }
+        });
+    }
 
     // Finding all objects of class Post in Parse database
-    protected void queryPosts() {
+    private void queryPosts() {
         // Specify which class to query
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include the user object related to the posts
         query.include(Post.KEY_USER);
         // Only get posts from current users
-        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        query.whereEqualTo(Post.KEY_USER, mUser);
         // limit query to latest 20 items
         query.setLimit(20);
         // order the posts from newest to oldest
@@ -136,6 +159,7 @@ public class ProfileFragment extends Fragment implements EditProfileFragment.Edi
         });
     }
 
+
     // Call this method to launch the edit dialog
     private void showEditDialog() {
         FragmentManager fm = getFragmentManager();
@@ -145,10 +169,35 @@ public class ProfileFragment extends Fragment implements EditProfileFragment.Edi
         editProfileDialog.show(fm, "fragment_edit_profile");
     }
 
-
     @Override
-    public void onFinishEditDialog(String displayName, String userBio) {
+    public void onFinishEditDialog(String displayName, String userBio, File photoFile) {
+        Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+
         mDisplayNameTv.setText(displayName);
         mUserBioTv.setText(userBio);
+        Glide.with(getContext()).load(takenImage).circleCrop().into(mProfilePicIv);
+    }
+
+    private void populateUserInfo() {
+        mDisplayNameTv.setText(mUser.getString(User.KEY_NAME));
+        mUserBioTv.setText(mUser.getString(User.KEY_BIO));
+
+        setProfilePic();
+
+        if (!mUsername.equals(ParseUser.getCurrentUser().getUsername())) {
+            mEditProfileBtn.setVisibility(View.GONE);
+            mLogOutBtn.setVisibility(View.GONE);
+        }
+    }
+
+    // Set profile pic with either file from database or default image
+    private void setProfilePic() {
+        ParseFile image = (ParseFile) mUser.get(User.KEY_PROFILE_PIC);
+
+        if (image != null)
+            Glide.with(getContext()).load(image.getUrl()).circleCrop().into(mProfilePicIv);
+        else
+            Glide.with(getContext()).load(R.drawable.ic_launcher_background)
+                    .circleCrop().into(mProfilePicIv);
     }
 }

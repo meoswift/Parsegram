@@ -12,7 +12,11 @@ import com.example.parsegram.R;
 import com.example.parsegram.fragments.ComposeFragment;
 import com.example.parsegram.fragments.PostsFragment;
 import com.example.parsegram.fragments.ProfileFragment;
+import com.example.parsegram.models.Post;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 // Activity that allows user to create a post with description and image, then post it
 public class HomeActivity extends AppCompatActivity {
@@ -44,6 +48,9 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.action_profile:
                         fragment = new ProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Post.KEY_USERNAME, ParseUser.getCurrentUser().getUsername());
+                        fragment.setArguments(bundle);
                         break;
                     default:
                         break;

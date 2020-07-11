@@ -2,6 +2,7 @@ package com.example.parsegram.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,13 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.example.parsegram.models.EndlessRecyclerViewScrollListener;
 import com.example.parsegram.models.Post;
 import com.example.parsegram.R;
 import com.example.parsegram.adapters.PostsAdapter;
+import com.example.parsegram.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
@@ -29,14 +34,16 @@ import java.util.List;
 // This fragment displays a list of posts on Home using RecyclerView. User can scroll infinitely.
 public class PostsFragment extends Fragment {
 
+    public static final int QUERY_POSTS_LIMIT = 5;
+
     protected RecyclerView mPostsRv;
     protected SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener mScrollListener;
-
+    ProgressBar mProgressBar;
 
     protected PostsAdapter mAdapter;
     protected List<Post> mPostList;
-    private int mOldestDate;
+    private int mOldestPostPosition;
     private LinearLayoutManager mLayoutManager;
 
     public PostsFragment() {
@@ -54,12 +61,16 @@ public class PostsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Find view
         mPostsRv = view.findViewById(R.id.rvPosts);
+        mProgressBar = view.findViewById(R.id.pbLoading);
 
         // Initialize posts list to empty
         mPostList = new ArrayList<Post>();
 
+        //
+        mOldestPostPosition = 0;
+
         // Create a new adapter instance
-        mAdapter = new PostsAdapter(mPostList, getContext());
+        mAdapter = new PostsAdapter(mPostList, getContext(), (AppCompatActivity) getActivity());
         // Set the adapter to posts RecyclerView
         mPostsRv.setAdapter(mAdapter);
         // Set layout as linear
@@ -71,7 +82,7 @@ public class PostsFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi();
+                loadNextPosts();
             }
         };
 
@@ -109,6 +120,8 @@ public class PostsFragment extends Fragment {
         query.setLimit(5);
         // order the posts from newest to oldest
         query.orderByDescending(Post.KEY_CREATED_AT);
+        // show progress bar
+        mProgressBar.setVisibility(View.VISIBLE);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             public void done(List<Post> posts, ParseException e) {
@@ -117,6 +130,8 @@ public class PostsFragment extends Fragment {
                     return;
                 }
 
+                // remove progress bar when post finished loading
+                mProgressBar.setVisibility(View.GONE);
                 // clear out old items before fetching new ones on refresh
                 mAdapter.clear();
                 // add the returned posts from API call to our local post list
@@ -125,21 +140,24 @@ public class PostsFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
                 // call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
+
             }
         });
-        mOldestDate = mLayoutManager.findLastVisibleItemPosition();
+
+        mOldestPostPosition += QUERY_POSTS_LIMIT; // update the last loaded position
     }
 
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
-    public void loadNextDataFromApi() {
+    public void loadNextPosts() {
         // Specify which class to query
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include the user object related to the posts
         query.include(Post.KEY_USER);
-        // limit query to latest 20 items
-        query.setLimit(5);
-        query.setSkip(mOldestDate);
+        // limit query to latest 5 items
+        query.setLimit(QUERY_POSTS_LIMIT);
+        // skip the Posts we have loaded to view
+        query.setSkip(mOldestPostPosition);
         // order the posts from newest to oldest
         query.orderByDescending(Post.KEY_CREATED_AT);
         // start an asynchronous call for posts
@@ -152,13 +170,12 @@ public class PostsFragment extends Fragment {
 
                 // add the returned posts from API call to our local post list
                 mAdapter.addAll(posts);
-                Log.d("HUH", String.valueOf(mOldestDate));
-
                 // notify the adapter than new items have been added
                 mAdapter.notifyDataSetChanged();
             }
         });
-        mOldestDate = mLayoutManager.findLastVisibleItemPosition();
+
+        mOldestPostPosition += QUERY_POSTS_LIMIT;
     }
 
 }

@@ -39,7 +39,6 @@ public class ComposeFragment extends Fragment {
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 123;
     private static final String APP_TAG = "Parsegram";
-    public static final String TAG = "ComposeFragment";
 
     private EditText mDescriptionEt;
     private Button mCaptureBtn;
