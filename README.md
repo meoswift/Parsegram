@@ -59,8 +59,8 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 
 ## Notes
-
-Describe any challenges encountered while building the app.
+- I'm really close to getting the like function to work but I'm not sure why when I try to get the list of users who like a post, the result is null. I have yet to debug this.
+- Pull to refresh works correctly on its own but after I implemented EndlessScrollListener, only 5 posts are shown when I pull to refresh. 
 
 ## License
 
